@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h1>Ajax Example Project</h1>
+
+<p id="para">This is an example project for ajax </p>
+<button id="ajax-button">Send a ajax request</button>
+
+<table class="sample" >
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Post_ID</th>
+    </tr>
+    </thead>
+    <tbody id="sampleTable">
+
+    </tbody>
+</table>
+
+<script src="assests/js/jquery.min.js"></script>
+<script>
+    /*//synchronous
+    console.log("start");
+    console.log("middle");
+    console.log("end");
+
+    //asynchronous
+    console.log("start");
+    setTimeout(()=>{
+        console.log("middle");
+    },2000);
+    console.log("end");*/
+
+ /*   $('#ajax-button').click(function (){
+        console.log("Request Started");
+        var http = new XMLHttpRequest();
+        http.open('GET','db/db.txt');
+        http.send();
+        http.onreadystatechange=function (){
+            if (http.status===200 && http.readyState===4){
+                 $('#para').text(http.responseText);
+                console.log(http.responseText)
+            }
+        }
+        console.log("Request Finished");
+    });*/
+
+    $('#ajax-button').click(function (){
+        console.log("Started");
+       $.ajax({
+           url:'http://localhost:8080/MyServlet_Web_exploded/hello',
+           method:'GET',
+           async:false, //synchronous karanawidiya
+           success:function (response){
+               console.log(response);
+               /*$('#para').text(response);*/
+
+               response.forEach(response=>{
+                   let Data = `<tr>
+            <td>${response.id}</td>
+            <td>${response.name}</td>
+            <td>${response.email}</td>
+            <td>${response.postId}</td>
+
+        </tr>`;
+                   $('#sampleTable').append(Data);
+               })
+
+           },
+           error:function (error){
+               console.log(error);
+           }
+       })
+        console.log("Ended");
+    });
+</script>
+</body>
+</html>

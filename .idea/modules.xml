@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/Application1/Application1.iml" filepath="$PROJECT_DIR$/Application1/Application1.iml" />
+      <module fileurl="file://$PROJECT_DIR$/GDSE69EE.iml" filepath="$PROJECT_DIR$/GDSE69EE.iml" />
+      <module fileurl="file://$PROJECT_DIR$/HelloServelt/HelloServelt.iml" filepath="$PROJECT_DIR$/HelloServelt/HelloServelt.iml" />
+      <module fileurl="file://$PROJECT_DIR$/MyServlet/MyServlet.iml" filepath="$PROJECT_DIR$/MyServlet/MyServlet.iml" />
+    </modules>
+  </component>
+</project>

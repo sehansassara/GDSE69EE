@@ -1,0 +1,12 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="gdse69">
+    <output-path>$PROJECT_DIR$/out/artifacts/gdse69</output-path>
+    <root id="archive" name="gdse69.war">
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="HelloServelt" />
+        </element>
+      </element>
+    </root>
+  </artifact>
+</component>

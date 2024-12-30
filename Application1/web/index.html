@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+
+    <title>Customer Table</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+
+        .navbar {
+            background-color: #333;
+            overflow: hidden;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+        }
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            display: inline-block;
+        }
+        .navbar a:hover {
+            background-color: #575757;
+            border-radius: 5px;
+        }
+        .content {
+            padding: 20px;
+        }
+        /* Table styles */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #f4b41a;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+        /* Form styles */
+        .form-container {
+            margin-bottom: 20px;
+        }
+        .form-container input {
+            padding: 8px;
+            margin-right: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        #btn_save_customer {
+            padding: 8px 15px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #btn_update_customer {
+            padding: 8px 15px;
+            background-color: #f3d23e;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+
+        .form-container button:hover {
+            background-color: #45a049;
+        }
+
+        .delete-btn {
+            background-color: #FF4C4C;
+            color: #ffffff;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 15px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .delete-btn:hover {
+            background-color: #FF1C1C;
+            transform: scale(1.05);
+            box-shadow: 0px 6px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        .delete-btn:active {
+            background-color: #D40000;
+            transform: scale(0.95);
+            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="navbar">
+    <a href="#customerSection">Customer</a>
+    <a href="pages/item.html">Item</a>
+    <a href="pages/placeOrder.html">Place Order</a>
+</div>
+
+
+<div id="customerSection" class="content">
+    <h1>Customer Table</h1>
+    <form class="form-container">
+        <input type="text" id="customerId" placeholder="Enter ID" required>
+        <input type="text" id="customerName" placeholder="Enter Name" required>
+        <input type="text" id="customerAddress" placeholder="Enter Address" required>
+        <button id="btn_save_customer" type="submit">Add Customer</button>
+        <button id="btn_update_customer" type="submit">Update Customer</button>
+    </form>
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Address</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody id="customerTableBody">
+        </tbody>
+    </table>
+</div>
+
+<script src="js/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
+
+<script>
+/*
+
+    const fetchCustomerData = () => {
+        $.ajax({
+            url: "http://localhost:8080/Application1_Web_exploded/customer",
+            type: "GET",
+
+            success: (res) => {
+                console.log(res);
+
+                $('#customerTableBody').empty();
+
+                res.forEach(customer => {
+                    let Data = `<tr data-id="${customer.id}" data-name="${customer.name}" data-address="${customer.address}">
+                    <td>${customer.id}</td>
+                    <td>${customer.name}</td>
+                    <td>${customer.address}</td>
+                     <td>
+                            <button class="delete-btn" onclick="deleteCustomer('${customer.id}')">Delete</button>
+                        </td>
+                </tr>`;
+
+                    $('#customerTableBody').append(Data);
+                });
+
+
+                $("tr").click(function () {
+                    let row = $(this);
+                    let id = row.data('id');
+                    let name = row.data('name');
+                    let address = row.data('address');
+
+
+                    $('#customerId').val(id);
+                    $('#customerName').val(name);
+                    $('#customerAddress').val(address);
+                });
+            },
+            error: (err) => {
+                console.log(err);
+            }
+        });
+    };
+
+    fetchCustomerData();
+
+    $("#btn_save_customer").click((e)=> {
+        e.preventDefault()
+
+        const customer_id = $('#customerId').val()
+        const customer_name = $('#customerName').val()
+        const customer_address = $('#customerAddress').val()
+
+        $.ajax({
+            url: "http://localhost:8080/Application1_Web_exploded/customer",
+            type: "POST",
+            data: {
+                id: customer_id,
+                name: customer_name,
+                address: customer_address
+            },
+
+            success: () => {
+                alert("Customer Saved successfully")
+                fetchCustomerData();
+            },
+            error: (err) => {
+                console.log(err);
+            },
+        })
+    })
+
+    $("#btn_update_customer").click((e) => {
+        e.preventDefault()
+
+        const customer_id = $('#customerId').val()
+        const customer_name = $('#customerName').val()
+        const customer_address = $('#customerAddress').val()
+
+        const customerData = {
+            customer_id,customer_name,customer_address
+        }
+
+        $.ajax({
+            url: `http://localhost:8080/Application1_Web_exploded/customer?name=${customer_name}&address=${customer_address}&id=${customer_id}`,
+            type: "PUT",
+
+            success: () => {
+                fetchCustomerData();
+            },
+            error: (err) => {
+                console.log(err);
+            },
+        })
+
+    })
+
+    const deleteCustomer = (id) => {
+        if (confirm("Are you sure ?")) {
+            $.ajax({
+                url: `http://localhost:8080/Application1_Web_exploded/customer?id=${id}`,
+                type: "DELETE",
+
+                success:() => {
+                    alert("DELETE Successfully");
+                    fetchCustomerData();
+                },
+                error:(err) => {
+                    console.log(err)
+                }
+            })
+        } else {
+            console.log("no")
+        }
+    }
+*/
+
+const fetchCustomerData = () => {
+    $.ajax({
+        url: "http://localhost:8080/Application1_Web_exploded/customer",
+        type: "GET",
+        success: (res) => {
+            console.log(res);
+            $('#customerTableBody').empty();
+            res.forEach(customer => {
+                let Data = `<tr data-id="${customer.id}" data-name="${customer.name}" data-address="${customer.address}">
+                    <td>${customer.id}</td>
+                    <td>${customer.name}</td>
+                    <td>${customer.address}</td>
+                     <td>
+                        <button class="delete-btn" onclick="deleteCustomer('${customer.id}')">Delete</button>
+                    </td>
+                </tr>`;
+                $('#customerTableBody').append(Data);
+            });
+
+            $("tr").click(function () {
+                let row = $(this);
+                let id = row.data('id');
+                let name = row.data('name');
+                let address = row.data('address');
+                $('#customerId').val(id);
+                $('#customerName').val(name);
+                $('#customerAddress').val(address);
+            });
+        },
+        error: (err) => {
+            console.log(err);
+            Swal.fire("Error", "Failed to fetch customer data!", "error");
+        }
+    });
+};
+
+fetchCustomerData();
+
+$("#btn_save_customer").click((e) => {
+    e.preventDefault();
+
+    const customer_id = $('#customerId').val();
+    const customer_name = $('#customerName').val();
+    const customer_address = $('#customerAddress').val();
+
+    $.ajax({
+        url: "http://localhost:8080/Application1_Web_exploded/customer",
+        type: "POST",
+        data: {
+            id: customer_id,
+            name: customer_name,
+            address: customer_address
+        },
+        success: () => {
+            Swal.fire("Success", "Customer saved successfully!", "success");
+            fetchCustomerData();
+        },
+        error: (err) => {
+            console.log(err);
+            Swal.fire("Error", "Failed to save customer!", "error");
+        },
+    });
+});
+
+$("#btn_update_customer").click((e) => {
+    e.preventDefault();
+
+    const customer_id = $('#customerId').val();
+    const customer_name = $('#customerName').val();
+    const customer_address = $('#customerAddress').val();
+
+    $.ajax({
+        url: `http://localhost:8080/Application1_Web_exploded/customer?name=${customer_name}&address=${customer_address}&id=${customer_id}`,
+        type: "PUT",
+        success: () => {
+            Swal.fire("Success", "Customer updated successfully!", "success");
+            fetchCustomerData();
+        },
+        error: (err) => {
+            console.log(err);
+            Swal.fire("Error", "Failed to update customer!", "error");
+        },
+    });
+});
+
+const deleteCustomer = (id) => {
+    Swal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#d33",
+        cancelButtonColor: "#3085d6",
+        confirmButtonText: "Yes, delete it!"
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                url: `http://localhost:8080/Application1_Web_exploded/customer?id=${id}`,
+                type: "DELETE",
+                success: () => {
+                    Swal.fire("Deleted!", "Customer has been deleted.", "success");
+                    fetchCustomerData();
+                },
+                error: (err) => {
+                    console.log(err);
+                    Swal.fire("Error", "Failed to delete customer!", "error");
+                }
+            });
+        }
+    });
+};
+
+</script>
+</body>
+</html>
